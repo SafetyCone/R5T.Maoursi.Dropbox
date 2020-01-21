@@ -13,7 +13,7 @@ namespace R5T.Maoursi.Dropbox
 {
     public static class IServiceCollectionExtensions
     {
-        public static IServiceCollection AddOrganizationsDirectoryPathProvider(this IServiceCollection services)
+        public static IServiceCollection AddDropboxOrganizationsDirectoryPathProvider(this IServiceCollection services)
         {
             services
                 .AddSingleton<IOrganizationsDirectoryPathProvider, DropboxOrganizationsDirectoryPathProvider>()
