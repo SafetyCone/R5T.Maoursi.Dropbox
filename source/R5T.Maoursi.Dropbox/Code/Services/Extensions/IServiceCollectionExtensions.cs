@@ -3,6 +3,7 @@
 using Microsoft.Extensions.DependencyInjection;
 
 using R5T.Bulgaria.UserProfileDirectory;
+using R5T.Dacia;
 using R5T.Kalamaria.Standard;
 using R5T.Lombardy.Standard;
 
@@ -13,16 +14,27 @@ namespace R5T.Maoursi.Dropbox
 {
     public static class IServiceCollectionExtensions
     {
-        public static IServiceCollection AddDropboxOrganizationsDirectoryPathProvider(this IServiceCollection services)
+        /// <summary>
+        /// Adds the <see cref="IOrganizationsDirectoryPathProvider"/> service.
+        /// </summary>
+        public static IServiceCollection AddOrganizationsDirectoryPathProvider(this IServiceCollection services)
         {
-            services
-                .AddSingleton<IOrganizationsDirectoryPathProvider, DropboxOrganizationsDirectoryPathProvider>()
-                .AddOrganizationsDirectoryNameConvention()
-                .AddDropboxDirectoryPathProvider()
-                .AddStringlyTypedPathOperator()
+            services.AddDropboxOrganizationsDirectoryPathProvider(
+                services.AddDropboxDirectoryPathProviderAction(),
+                services.AddOrganizationsDirectoryNameConventionAction(),
+                services.AddStringlyTypedPathOperatorAction())
                 ;
 
             return services;
+        }
+
+        /// <summary>
+        /// Adds the <see cref="IOrganizationsDirectoryPathProvider"/> service.
+        /// </summary>
+        public static ServiceAction<IOrganizationsDirectoryPathProvider> AddOrganizationsDirectoryPathProviderAction(this IServiceCollection services)
+        {
+            var serviceProvider = new ServiceAction<IOrganizationsDirectoryPathProvider>(() => services.AddOrganizationsDirectoryPathProvider());
+            return serviceProvider;
         }
     }
 }
